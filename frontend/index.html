@@ -1,0 +1,128 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EnergyTrade — Smart Energy. Smarter Trading.</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--navy:#0a1628;--navy2:#12243f;--green:#22c55e;--blue:#2dd4ff;--bg:#f4f8fb;--card:#fff;--txt:#0f1d33;--mut:#5b6b82}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,system-ui,Segoe UI,sans-serif;background:var(--bg);color:var(--txt)}
+nav{position:sticky;top:0;z-index:9;display:flex;align-items:center;gap:6px;padding:12px 5%;background:rgba(10,22,40,.92);backdrop-filter:blur(10px);flex-wrap:wrap}
+nav b{color:#fff;font-size:1.25rem;margin-right:auto}nav b span{color:var(--green)}nav a{color:#c9d6ea;text-decoration:none;padding:7px 11px;border-radius:8px;font-size:.92rem;transition:.2s}nav a:hover{background:#1c3355;color:#fff}
+.btn{border:0;cursor:pointer;padding:11px 22px;border-radius:10px;font-weight:600;font-size:.95rem;transition:.2s}.btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(34,197,94,.3)}
+.g{background:linear-gradient(135deg,var(--green),#16a34a);color:#fff}.b{background:linear-gradient(135deg,var(--blue),#2563eb);color:#fff}.o{background:transparent;border:1.5px solid #3b5a86;color:#fff}.d{background:#e8eef6;color:var(--txt)}
+.hero{background:radial-gradient(circle at 80% 20%,#12406a,transparent 50%),linear-gradient(160deg,var(--navy),var(--navy2));color:#fff;padding:80px 5%;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(2rem,4.5vw,3.6rem);line-height:1.1;margin:.3em 0}.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--green),var(--blue));-webkit-background-clip:text;color:transparent}
+.hero p{color:#b7c6dd;max-width:560px;line-height:1.6}.tag{color:var(--green);font-weight:700;letter-spacing:.1em;font-size:.8rem}.hero .row{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
+section{padding:70px 5%;max-width:1300px;margin:auto}h2{font-size:2rem;margin:0 0 8px}.sub{color:var(--mut);margin-bottom:30px}
+.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.card{background:var(--card);border-radius:16px;padding:22px;box-shadow:0 4px 20px rgba(10,22,40,.07);transition:.25s}.card:hover{transform:translateY(-5px);box-shadow:0 14px 32px rgba(10,22,40,.13)}
+.stat{font-size:1.9rem;font-weight:800;color:var(--navy)}.lbl{color:var(--mut);font-size:.85rem}.ico{font-size:1.8rem}
+.stats{margin-top:-45px;position:relative;z-index:2;padding-top:0}
+table{width:100%;border-collapse:collapse;font-size:.9rem}th{text-align:left;color:var(--mut);padding:8px;border-bottom:2px solid #e3eaf3;cursor:pointer}td{padding:8px;border-bottom:1px solid #eef2f7}
+.scroll{max-height:340px;overflow:auto}input,select{width:100%;padding:11px;border:1.5px solid #d5dfec;border-radius:10px;margin:5px 0 12px;font-size:.95rem}input:focus{outline:2px solid var(--blue);border-color:transparent}
+.msg{padding:10px 14px;border-radius:10px;margin-top:10px;font-size:.9rem;display:none}.ok{background:#dcfce7;color:#166534;display:block}.err{background:#fee2e2;color:#991b1b;display:block}
+.two{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}.best{font-size:1.5rem;font-weight:800}.buy{color:#16a34a}.sell{color:#dc2626}
+.lvl{display:flex;justify-content:space-around;margin:6px 0}.node{background:#eaf7ef;border:1.5px solid var(--green);border-radius:10px;padding:4px 7px;font-size:.72rem;text-align:center;min-width:52px}.node.s{background:#fdecec;border-color:#f87171}
+.log{font-family:monospace;font-size:.8rem;background:var(--navy);color:#9fe8b5;border-radius:10px;padding:12px;max-height:180px;overflow:auto}
+.steps .card h3{margin:.3em 0}.bar{height:8px;border-radius:5px;background:#dfe8f3;overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--blue));transition:width .6s}
+.math{background:#fff;border-left:4px solid var(--blue);padding:14px 18px;border-radius:10px;margin:10px 0;line-height:1.7}
+footer{background:var(--navy);color:#9db0cc;padding:40px 5%;font-size:.9rem;line-height:1.7}footer b{color:#fff}
+@media(max-width:850px){.hero{grid-template-columns:1fr;padding:50px 5%}nav a{padding:6px 7px;font-size:.8rem}}
+</style></head><body>
+<nav><b>⚡ Energy<span>Trade</span></b><a href="#home">Home</a><a href="#how">How It Works</a><a href="#features">Features</a><a href="#market">Marketplace</a><a href="#analytics">Analytics</a><a href="#perf">Performance</a><a href="#algo">Algorithm</a><button class="btn g" onclick="location='#orders'">Get Started</button></nav>
+
+<div class="hero" id="home"><div><div class="tag">P2P ENERGY MARKETPLACE</div><h1>Trade Energy Smarter with <em>Intelligent Matching.</em></h1>
+<p>Connect renewable energy producers with electricity consumers through an intelligent peer-to-peer trading marketplace powered by greedy algorithms.</p>
+<div class="row"><button class="btn g" onclick="location='#market'">Explore Marketplace</button><button class="btn o" onclick="location='#orders'">Start Trading</button></div><p style="margin-top:20px"><b>Smart Energy. Smarter Trading.</b></p></div>
+<svg viewBox="0 0 420 300" style="width:100%"><defs><linearGradient id="gg" x1="0" x2="1"><stop offset="0" stop-color="#22c55e"/><stop offset="1" stop-color="#2dd4ff"/></linearGradient></defs>
+<circle cx="340" cy="60" r="34" fill="#fbbf24"><animate attributeName="r" values="32;37;32" dur="3s" repeatCount="indefinite"/></circle>
+<g fill="#1d4ed8" stroke="#93c5fd" stroke-width="2"><path d="M40 230l40-60h90l-20 60z"/><path d="M190 230l20-60h90l20 60z"/></g><path d="M60 215l25-38M100 215l22-38M215 215l12-38M255 215l5-38" stroke="#93c5fd" fill="none"/>
+<path d="M170 150C210 110 230 150 290 100S350 140 380 190" stroke="url(#gg)" stroke-width="4" fill="none" stroke-dasharray="8 8"><animate attributeName="stroke-dashoffset" from="0" to="-32" dur="1.2s" repeatCount="indefinite"/></path>
+<g fill="url(#gg)"><circle cx="380" cy="195" r="20"/><text x="380" y="201" font-size="18" text-anchor="middle" fill="#0a1628" font-weight="800">₹</text></g>
+<g stroke="#2dd4ff" stroke-width="3" fill="none"><path d="M60 270h300"/><path d="M110 270V245M310 270V245"/></g></svg></div>
+
+<section class="stats"><div class="grid" id="liveStats"></div></section>
+
+<section id="how"><h2>How It Works</h2><div class="sub">Three steps from order to settled trade.</div><div class="grid steps">
+<div class="card"><div class="ico">📝</div><h3>1. Submit Orders</h3>Buyers and sellers submit electricity orders (price per kWh, quantity).</div>
+<div class="card"><div class="ico">🌳</div><h3>2. Compare with Heaps</h3>The matching engine compares bids and asks using a Max-Heap and a Min-Heap.</div>
+<div class="card"><div class="ico">🤝</div><h3>3. Auto-Match</h3>Compatible orders are matched automatically and a trade list is generated.</div></div></section>
+
+<section id="features"><h2>Features</h2><div class="sub">Everything runs on a real C++ backend.</div><div class="grid">
+<div class="card"><div class="ico">🎯</div><h3>Greedy Matching</h3>Highest bid meets lowest ask, provably optimal choice.</div>
+<div class="card"><div class="ico">⛰️</div><h3>Max-Heap & Min-Heap</h3>O(log n) extract/insert for both sides.</div>
+<div class="card"><div class="ico">⚙️</div><h3>Automated Execution</h3>Trades generated until no valid pair remains.</div>
+<div class="card"><div class="ico">🎲</div><h3>Synthetic Orders</h3>Generate 100 to 100,000 realistic orders.</div>
+<div class="card"><div class="ico">📖</div><h3>Real-Time Order Book</h3>Heap-ordered best bid/ask view.</div>
+<div class="card"><div class="ico">📈</div><h3>Performance Analytics</h3>Naive vs heap benchmarks with fitted curves.</div></div></section>
+
+<section id="orders"><h2>Place Orders</h2><div class="sub">Order IDs are generated automatically by the server.</div><div class="two">
+<div class="card"><h3 class="buy">Buy Electricity</h3><label>Buyer ID<input id="bid_id" placeholder="e.g. C-101"></label><label>Bid Price (₹ per kWh)<input id="bid_p" type="number" step="0.01"></label><label>Quantity (kWh)<input id="bid_q" type="number"></label><button class="btn g" onclick="submitOrder('buy')">Submit Buy Order</button><div class="msg" id="m_buy"></div></div>
+<div class="card"><h3 class="sell">Sell Electricity</h3><label>Seller ID<input id="ask_id" placeholder="e.g. P-201"></label><label>Ask Price (₹ per kWh)<input id="ask_p" type="number" step="0.01"></label><label>Quantity (kWh)<input id="ask_q" type="number"></label><button class="btn b" onclick="submitOrder('sell')">Submit Sell Order</button><div class="msg" id="m_sell"></div></div></div></section>
+
+<section id="gen"><h2>Synthetic Order Generator</h2><div class="sub">Orders are generated by the C++ backend and added to the order book.</div><div class="card" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+<select id="genN" style="max-width:200px;margin:0"><option>100</option><option>1000</option><option>10000</option><option>100000</option></select><button class="btn g" onclick="gen()">Generate Orders</button><button class="btn d" onclick="clearAll()">Clear Orders</button><span id="genMsg" class="lbl"></span></div></section>
+
+<section id="market"><h2>Order Book</h2><div class="sub">Top 50 open orders, ordered by the heap rule (bids: highest first, asks: lowest first).</div>
+<div class="grid" style="margin-bottom:18px"><div class="card"><div class="lbl">BEST BID</div><div class="best buy" id="bestBid">–</div></div><div class="card"><div class="lbl">BEST ASK</div><div class="best sell" id="bestAsk">–</div></div></div>
+<div class="two"><div class="card"><h3>Buy Orders (Max-Heap)</h3><div class="scroll"><table id="tBuy"></table></div></div><div class="card"><h3>Sell Orders (Min-Heap)</h3><div class="scroll"><table id="tSell"></table></div></div></div></section>
+
+<section id="match"><h2>Matching Engine</h2><div class="sub">Greedy double auction. <b>Pricing rule:</b> each trade executes at the seller's ask price. Trade qty = min(remaining bid, remaining ask); partial fills are reinserted.</div>
+<div class="card"><button class="btn g" onclick="runMatch()">Run Matching Engine</button> <button class="btn d" onclick="resetMatch()">Reset Matching</button><div class="bar"><i id="prog"></i></div><div id="mSum" style="margin-top:12px"></div></div>
+<div class="two" style="margin-top:18px"><div class="card"><h3>Max-Heap (bids, array layout, first 15)</h3><div id="hB"></div></div><div class="card"><h3>Min-Heap (asks, array layout, first 15)</h3><div id="hS"></div></div></div>
+<div class="two" style="margin-top:18px"><div class="card"><h3>Comparison log</h3><div class="log" id="mLog">Run the engine…</div></div><div class="card"><h3>Matches (first 30)</h3><div class="scroll"><table id="tMatch"></table></div></div></div></section>
+
+<section id="analytics"><h2>Dashboard & Trade History</h2><div class="grid" id="dash"></div>
+<div class="two" style="margin-top:18px"><div class="card"><h3>Order status</h3><canvas id="cStatus" height="200"></canvas></div><div class="card"><h3>Buy vs Sell volume</h3><canvas id="cVol" height="200"></canvas></div></div>
+<div class="card" style="margin-top:18px"><h3>Trade History</h3><input id="tq" placeholder="Search buyer / seller / trade id…" oninput="drawTrades()"><div class="scroll"><table id="tTrades"></table></div></div></section>
+
+<section id="perf"><h2>Performance Analysis</h2><div class="sub">Both algorithms run on identical datasets in C++ (std::chrono::steady_clock). The naive run at n=100,000 may take several seconds.</div>
+<button class="btn g" onclick="bench()">Run Benchmark</button><span id="bMsg" class="lbl"></span><div class="card" style="margin-top:16px"><div class="scroll"><table id="tBench"></table></div></div>
+<div class="two" style="margin-top:18px"><div class="card"><h3>Runtime vs n (measured)</h3><canvas id="c1"></canvas></div><div class="card"><h3>Naive vs Heap (bar)</h3><canvas id="c2"></canvas></div></div>
+<div class="card" style="margin-top:18px"><h3>Growth curves: measured points vs fitted theory (log-log)</h3><canvas id="c3" height="120"></canvas><div class="lbl" id="fit"></div></div></section>
+
+<section id="algo"><h2>Algorithm Analysis</h2>
+<div class="math"><b>Greedy strategy.</b> The highest bid b* is the buyer willing to pay most; the lowest ask a* is the cheapest seller. If b* &lt; a*, then no pair is feasible, since every other bid ≤ b* &lt; a* ≤ every other ask.</div>
+<div class="math"><b>Exchange argument.</b> Let OPT be a feasible matching that does not pair b* with a*. Let b* be paired with a′ (a′ ≥ a*) and a* with b′ (b′ ≤ b*) (or unmatched). Swap partners: b*–a* is feasible since b* ≥ b′ ≥ a*, and b′–a′ is not required; the number of matched units and total energy don't decrease, so a solution containing b*–a* is at least as good. Hence the greedy choice is safe and no feasible match is missed.</div>
+<div class="math"><b>Loop invariant.</b> At the start of each iteration, the Max-Heap root is the highest remaining bid, the Min-Heap root is the lowest remaining ask, and all trades emitted so far are feasible. <i>Initialization:</i> heaps built from all open orders, trades = ∅. <i>Maintenance:</i> after a trade, the remainder is reinserted, so heap order holds. <i>Termination:</i> when a heap empties or root bid &lt; root ask, no feasible pair remains by the argument above.</div>
+<div class="math"><b>Complexity.</b> Heap build: O(n). insert/extract: O(log n). Each iteration removes at least one order completely, so at most n+m iterations → heap matcher O(n log n). Naive matcher scans all orders each iteration: O(n) × O(n) = O(n²).</div></section>
+
+<footer><b>EnergyTrade</b> — DAA Project: Double-Auction Matching Engine for a P2P Energy Market.<br>Stack: C++17, cpp-httplib REST API, HTML5/CSS3/JavaScript, Chart.js, MySQL (schema).</footer>
+
+<script>
+const $=id=>document.getElementById(id),fmt=n=>Number(n).toLocaleString('en-IN');
+async function api(p,body){const o=body?{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(body)}:{};const r=await fetch('/api/'+p,o);const j=await r.json();if(!r.ok)throw new Error(j.error||'Error');return j}
+const msg=(id,t,ok)=>{const e=$(id);e.textContent=t;e.className='msg '+(ok?'ok':'err')};
+let ch={};function chart(id,cfg){if(ch[id])ch[id].destroy();ch[id]=new Chart($(id),cfg)}
+async function refresh(){try{const s=await api('stats');
+ $('liveStats').innerHTML=[['Total Buy Orders',fmt(s.buys)],['Total Sell Orders',fmt(s.sells)],['Energy Traded (kWh)',fmt(s.energy)],['Avg Trading Price','₹'+s.avgPrice]].map(x=>`<div class="card"><div class="stat">${x[1]}</div><div class="lbl">${x[0]}</div></div>`).join('');
+ $('dash').innerHTML=[['Buy orders',fmt(s.buys)],['Sell orders',fmt(s.sells)],['Fully matched',fmt(s.matched)],['Partially filled',fmt(s.partial)],['Unmatched',fmt(s.unmatched)],['Energy traded (kWh)',fmt(s.energy)],['Transaction value','₹'+fmt(s.value)],['Trades',fmt(s.trades)]].map(x=>`<div class="card"><div class="stat">${x[1]}</div><div class="lbl">${x[0]}</div></div>`).join('');
+ chart('cStatus',{type:'doughnut',data:{labels:['Matched','Partial','Unmatched'],datasets:[{data:[s.matched,s.partial,s.unmatched],backgroundColor:['#22c55e','#2dd4ff','#94a3b8']}]}});
+ chart('cVol',{type:'bar',data:{labels:['Buy orders','Sell orders','Trades'],datasets:[{data:[s.buys,s.sells,s.trades],backgroundColor:['#22c55e','#2563eb','#0a1628']}]},options:{plugins:{legend:{display:false}}}});
+ const o=await api('orderbook');$('bestBid').textContent=o.bestBid==null?'–':'₹'+o.bestBid;$('bestAsk').textContent=o.bestAsk==null?'–':'₹'+o.bestAsk;
+ const tb=(a,p)=>'<tr><th>Order ID</th><th>'+(p=='B'?'Buyer':'Seller')+'</th><th>Price</th><th>Qty</th></tr>'+a.map(x=>`<tr><td>${p}-${x.id}</td><td>${x.party}</td><td>₹${x.price}</td><td>${x.qty}</td></tr>`).join('');
+ $('tBuy').innerHTML=tb(o.buys,'B');$('tSell').innerHTML=tb(o.sells,'S');await loadTrades()}catch(e){console.error(e)}}
+async function submitOrder(side){const k=side=='buy'?'bid':'ask';const party=$(k+'_id').value.trim(),price=+$(k+'_p').value,qty=+$(k+'_q').value;
+ if(!party)return msg('m_'+side,'ID is required',0);if(!(price>0))return msg('m_'+side,'Price must be positive',0);if(!(qty>0)||!Number.isInteger(qty))return msg('m_'+side,'Quantity must be a positive whole number',0);
+ try{const r=await api('orders',{side,party,price,qty});msg('m_'+side,'Order '+(side=='buy'?'B-':'S-')+r.order.id+' placed',1);refresh()}catch(e){msg('m_'+side,e.message,0)}}
+async function gen(){$('genMsg').textContent='Generating…';try{const r=await api('generate',{n:$('genN').value});$('genMsg').textContent=`Added ${fmt(r.buys)} buys + ${fmt(r.sells)} sells in ${r.ms} ms`;refresh()}catch(e){$('genMsg').textContent=e.message}}
+async function clearAll(){await api('clear',{});$('genMsg').textContent='Cleared';refresh()}
+const tree=(a,c)=>{let h='',i=0,w=1;while(i<a.length){h+='<div class="lvl">'+a.slice(i,i+w).map(x=>`<div class="node ${c}">${x.id}<br>₹${x.price}<br>${x.qty}kWh</div>`).join('')+'</div>';i+=w;w*=2}return h||'<i>empty</i>'};
+async function runMatch(){$('prog').style.width='30%';try{const r=await api('match',{});$('prog').style.width='100%';
+ $('hB').innerHTML=tree(r.heapBuy,'');$('hS').innerHTML=tree(r.heapSell,'s');$('mLog').innerHTML=r.log.join('<br>')||'No orders';
+ $('mSum').innerHTML=`<b>${fmt(r.newTrades)}</b> trades · <b>${fmt(r.energy)}</b> kWh · ₹<b>${fmt(r.value)}</b> · engine time ${r.ms} ms · partial: ${r.stats.partial}, unmatched: ${r.stats.unmatched}`;
+ $('tMatch').innerHTML='<tr><th>ID</th><th>Buyer</th><th>Seller</th><th>Price</th><th>Qty</th></tr>'+r.sample.map(t=>`<tr><td>T-${t.id}</td><td>${t.buyer}</td><td>${t.seller}</td><td>₹${t.price}</td><td>${t.qty}</td></tr>`).join('');refresh()}catch(e){$('mSum').textContent=e.message}}
+async function resetMatch(){await api('reset',{});$('prog').style.width='0';$('mSum').textContent='Matching reset';refresh()}
+let T=[],sk='id',sd=1;async function loadTrades(){const r=await api('trades');T=r.trades;drawTrades()}
+function drawTrades(){const q=$('tq').value.toLowerCase();let a=T.filter(t=>(t.buyer+t.seller+t.id).toLowerCase().includes(q)).sort((x,y)=>(x[sk]>y[sk]?1:-1)*sd);
+ const H=[['id','Trade'],['buyer','Buyer'],['seller','Seller'],['price','Price'],['qty','Qty'],['value','Value']];
+ $('tTrades').innerHTML='<tr>'+H.map(h=>`<th onclick="sortT('${h[0]}')">${h[1]}</th>`).join('')+'</tr>'+a.slice(0,200).map(t=>`<tr><td>T-${t.id}</td><td>${t.buyer}</td><td>${t.seller}</td><td>₹${t.price}</td><td>${t.qty}</td><td>₹${(t.price*t.qty).toFixed(2)}</td></tr>`).join('')}
+function sortT(k){if(k=='value'){T.forEach(t=>t.value=t.price*t.qty)}sd=sk==k?-sd:1;sk=k;drawTrades()}
+async function bench(){$('bMsg').textContent=' Running C++ benchmark…';try{const d=await api('benchmark',{});$('bMsg').textContent=' Done';
+ $('tBench').innerHTML='<tr><th>Orders (n)</th><th>Naive (ms)</th><th>Heap (ms)</th><th>Speed-up</th><th>Trades</th><th>Results agree</th></tr>'+d.map(r=>`<tr><td>${fmt(r.n)}</td><td>${r.naiveMs.toFixed(3)}</td><td>${r.heapMs.toFixed(3)}</td><td>${(r.naiveMs/r.heapMs).toFixed(1)}×</td><td>${r.trades}</td><td>${r.agree?'✔':'✘'}</td></tr>`).join('');
+ const n=d.map(r=>r.n),nv=d.map(r=>r.naiveMs),hp=d.map(r=>r.heapMs),L=x=>x*Math.log2(x);
+ const cN=nv.reduce((s,t,i)=>s+t*n[i]**2,0)/n.reduce((s,x)=>s+x**4,0),cH=hp.reduce((s,t,i)=>s+t*L(n[i]),0)/n.reduce((s,x)=>s+L(x)**2,0);
+ chart('c1',{type:'line',data:{labels:n,datasets:[{label:'Naive (measured)',data:nv,borderColor:'#dc2626'},{label:'Heap (measured)',data:hp,borderColor:'#22c55e'}]},options:{scales:{y:{title:{display:true,text:'ms'}},x:{title:{display:true,text:'n'}}}}});
+ chart('c2',{type:'bar',data:{labels:n,datasets:[{label:'Naive',data:nv,backgroundColor:'#dc2626'},{label:'Heap',data:hp,backgroundColor:'#22c55e'}]},options:{scales:{y:{type:'logarithmic'}}}});
+ const xs=[100,300,1000,3000,10000,30000,100000];
+ chart('c3',{type:'line',data:{labels:xs,datasets:[{label:'Naive measured',data:n.map((x,i)=>({x,y:nv[i]})),showLine:false,borderColor:'#dc2626',backgroundColor:'#dc2626',pointRadius:6,parsing:false},{label:'Fit c·n² (theory)',data:xs.map(x=>({x,y:cN*x*x})),borderColor:'#dc2626',borderDash:[6,4],pointRadius:0,parsing:false},{label:'Heap measured',data:n.map((x,i)=>({x,y:hp[i]})),showLine:false,borderColor:'#22c55e',backgroundColor:'#22c55e',pointRadius:6,parsing:false},{label:'Fit c·n log n (theory)',data:xs.map(x=>({x,y:cH*L(x)})),borderColor:'#22c55e',borderDash:[6,4],pointRadius:0,parsing:false}]},options:{scales:{x:{type:'logarithmic'},y:{type:'logarithmic'}}}});
+ $('fit').textContent=`Least-squares fits: T_naive ≈ ${cN.toExponential(2)}·n² ms, T_heap ≈ ${cH.toExponential(2)}·n·log₂n ms. Dots = measured, dashed = fitted theoretical growth.`}catch(e){$('bMsg').textContent=' '+e.message}}
+refresh();
+</script></body></html>
