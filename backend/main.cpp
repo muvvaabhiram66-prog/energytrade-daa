@@ -69,14 +69,16 @@ int main() {
     for (size_t i = st; i < trades.size(); i++) { auto& t = trades[i]; s += string(i > st ? "," : "") + "{\"id\":" + to_string(t.id) + ",\"buyer\":\"" + esc(t.buyer) + "\",\"seller\":\"" + esc(t.seller) + "\",\"price\":" + num(t.price) + ",\"qty\":" + to_string(t.qty) + "}"; }
     json(res, s + "]}");
   });
-  svr.Post("/api/benchmark", [](const httplib::Request&, httplib::Response& res) {  // identical datasets for both algorithms
-    string s = "["; int first = 1; for (int n : {100, 1000, 10000, 100000}) {
-      vector<Order> B, S; int id = 1; mt19937 r(n); genOrders(B, n / 2, true, id, r); genOrders(S, n / 2, false, id, r);
-      auto B2 = B, S2 = S; int t1 = 1, t2 = 1;
-      double a = now(); auto nv = naiveMatch(B, S, t1); double b = now(); auto hp = heapMatch(B2, S2, t2); double c = now();
-      s += string(first ? "" : ",") + "{\"n\":" + to_string(n) + ",\"naiveMs\":" + to_string(b - a) + ",\"heapMs\":" + to_string(c - b) + ",\"trades\":" + to_string(hp.size()) + ",\"agree\":" + (nv.size() == hp.size() ? "true" : "false") + "}"; first = 0;
-    }
-    json(res, s + "]");
+  svr.Post("/api/benchmark", [](const httplib::Request& req, httplib::Response& res) {  // one size per request; identical dataset for both algorithms
+    int n = atoi(req.get_param_value("n").c_str()); if (n != 100 && n != 1000 && n != 10000 && n != 100000) return json(res, "{\"error\":\"n must be 100, 1000, 10000 or 100000\"}", 400);
+    vector<Order> B, S; int id = 1; mt19937 r(n); genOrders(B, n / 2, true, id, r); genOrders(S, n / 2, false, id, r);
+    auto B2 = B, S2 = S; int t1 = 1, t2 = 1; bool capped = false;
+    double a = now(); auto hp = heapMatch(B2, S2, t2); double b = now();
+    auto nv = naiveMatch(B, S, t1, 40000, &capped); double c = now();   // naive is capped at 40 s so the request cannot time out
+    double nms = c - b, hms = b - a, est = nms;
+    if (capped) est = nv.empty() ? nms : nms * (double)hp.size() / (double)nv.size();   // extrapolate by fraction of trades completed
+    json(res, "{\"n\":" + to_string(n) + ",\"naiveMs\":" + to_string(capped ? est : nms) + ",\"heapMs\":" + to_string(hms) + ",\"trades\":" + to_string(hp.size()) +
+      ",\"capped\":" + (capped ? "true" : "false") + ",\"agree\":" + (!capped && nv.size() == hp.size() ? "true" : "false") + "}");
   });
   const char* pe = getenv("PORT"); int port = pe ? atoi(pe) : 8080;
   printf("EnergyTrade running on port %d\n", port); svr.listen("0.0.0.0", port);
