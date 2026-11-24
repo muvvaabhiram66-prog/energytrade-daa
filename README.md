@@ -1,6 +1,8 @@
 # EnergyTrade — Double-Auction Matching Engine for a P2P Energy Market (DAA Project)
 Greedy matching of buy bids and sell asks with a Max-Heap and a Min-Heap, benchmarked against a naive O(n²) matcher.
-
+## Live Demo
+https://energytrade-daa.onrender.com/
+Note: the site runs on a free plan, so the first load can take about a minute.
 ## Structure
 - `backend/engine.hpp` — heap matcher, naive matcher, synthetic order generator
 - `backend/main.cpp` — REST API (cpp-httplib) + static file server
