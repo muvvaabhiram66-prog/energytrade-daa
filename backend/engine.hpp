@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <random>
 #include <cmath>
+#include <chrono>
 struct Order { int id; std::string party; double price; int qty; int orig; };
 struct Trade { int id; std::string buyer, seller; double price; int qty; };
 // Max-heap on bids (highest price, then earliest id); Min-heap on asks (lowest price, then earliest id)
@@ -37,18 +38,25 @@ inline std::vector<Trade> heapMatch(std::vector<Order>& B, std::vector<Order>& S
   }
   return out;
 }
-// Naive: every iteration linearly scans for best bid and best ask -> O(n) per trade, O(n^2) total.
-inline std::vector<Trade> naiveMatch(std::vector<Order>& B, std::vector<Order>& S, int& tid) {
-  std::vector<Trade> out;
+// Naive: every iteration linearly scans ALL orders for best bid and best ask -> O(n) per trade, O(n^2) total.
+// (Scans compact arrays for cache efficiency; the asymptotic behaviour is unchanged.)
+inline std::vector<Trade> naiveMatch(std::vector<Order>& B, std::vector<Order>& S, int& tid, double maxMs = 0, bool* capped = nullptr) {
+  auto t0 = std::chrono::steady_clock::now(); std::vector<Trade> out; size_t nb = B.size(), ns = S.size();
+  std::vector<double> bp(nb), sp(ns); std::vector<int> bq(nb), sq(ns), bi_(nb), si_(ns);
+  for (size_t i = 0; i < nb; i++) { bp[i] = B[i].price; bq[i] = B[i].qty; bi_[i] = B[i].id; }
+  for (size_t i = 0; i < ns; i++) { sp[i] = S[i].price; sq[i] = S[i].qty; si_[i] = S[i].id; }
   while (true) {
+    if (maxMs > 0 && (out.size() & 63) == 0 && std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count() > maxMs) { if (capped) *capped = true; break; }
     int bi = -1, si = -1;
-    for (size_t i = 0; i < B.size(); i++) if (B[i].qty > 0 && (bi < 0 || B[i].price > B[bi].price || (B[i].price == B[bi].price && B[i].id < B[bi].id))) bi = (int)i;
-    for (size_t i = 0; i < S.size(); i++) if (S[i].qty > 0 && (si < 0 || S[i].price < S[si].price || (S[i].price == S[si].price && S[i].id < S[si].id))) si = (int)i;
-    if (bi < 0 || si < 0 || B[bi].price < S[si].price) break;
-    int q = std::min(B[bi].qty, S[si].qty);
-    out.push_back({tid++, B[bi].party, S[si].party, S[si].price, q});
-    B[bi].qty -= q; S[si].qty -= q;
+    for (size_t i = 0; i < nb; i++) if (bq[i] > 0 && (bi < 0 || bp[i] > bp[bi] || (bp[i] == bp[bi] && bi_[i] < bi_[bi]))) bi = (int)i;
+    for (size_t i = 0; i < ns; i++) if (sq[i] > 0 && (si < 0 || sp[i] < sp[si] || (sp[i] == sp[si] && si_[i] < si_[si]))) si = (int)i;
+    if (bi < 0 || si < 0 || bp[bi] < sp[si]) break;
+    int q = std::min(bq[bi], sq[si]);
+    out.push_back({tid++, B[bi].party, S[si].party, sp[si], q});
+    bq[bi] -= q; sq[si] -= q;
   }
+  for (size_t i = 0; i < nb; i++) B[i].qty = bq[i];
+  for (size_t i = 0; i < ns; i++) S[i].qty = sq[i];
   return out;
 }
 // Synthetic order generator: prices ~ N(6,1) for bids, N(5,1) for asks (Rs/kWh); qty uniform 1..50 kWh
