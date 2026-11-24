@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>EnergyTrade — Smart Energy. Smarter Trading.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><title>EnergyTrade — Smart Energy. Smarter Trading.</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root{--navy:#0a1628;--navy2:#12243f;--green:#22c55e;--blue:#2dd4ff;--bg:#f4f8fb;--card:#fff;--txt:#0f1d33;--mut:#5b6b82}
@@ -38,6 +38,23 @@ footer{background:#071322;color:#9db0cc;padding:50px 5% 24px;font-size:.92rem;li
 .fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:30px;margin:26px 0}.fb{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid #16304f;padding-top:20px;margin-top:20px;font-size:.85rem}.fb div{display:flex;gap:18px}.fb a{display:inline;padding:0}
 .fo{display:inline-block;margin-top:12px;padding:9px 16px;border:1px solid #3b5a86;border-radius:10px;color:#fff;font-weight:600}footer a.fo:hover{border-color:var(--green);color:#fff}
 @media(max-width:850px){.hero{grid-template-columns:1fr;padding:50px 5%}nav a{padding:6px 7px;font-size:.8rem}}
+
+/* ===== Modern theme layer ===== */
+body{font-family:'Inter',system-ui,sans-serif;background:radial-gradient(900px 500px at 8% 18%,rgba(45,212,255,.10),transparent 60%),radial-gradient(800px 500px at 95% 45%,rgba(34,197,94,.10),transparent 60%),#f2f6fb;letter-spacing:-.005em}
+nav{top:12px;margin:12px 2.5% -72px;padding:10px 18px;border-radius:18px;background:rgba(10,22,40,.72);border:1px solid rgba(255,255,255,.1);box-shadow:0 10px 30px rgba(5,12,25,.35);backdrop-filter:blur(16px) saturate(160%)}
+.hero{padding:150px 5% 90px;position:relative;overflow:hidden}.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(circle at 50% 40%,#000,transparent 75%)}.hero>*{position:relative}
+.tag{display:inline-block;padding:6px 14px;border:1px solid rgba(34,197,94,.4);border-radius:999px;background:rgba(34,197,94,.1)}
+.btn{border-radius:999px;padding:12px 26px}.g{box-shadow:0 8px 22px rgba(34,197,94,.35)}.b{box-shadow:0 8px 22px rgba(37,99,235,.3)}.o{backdrop-filter:blur(6px)}
+h2{font-size:2.2rem;letter-spacing:-.03em;position:relative;padding-bottom:12px}h2::after{content:"";position:absolute;left:0;bottom:0;width:54px;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--blue))}
+.card{border-radius:22px;border:1px solid rgba(15,29,51,.06);box-shadow:0 1px 2px rgba(10,22,40,.04),0 12px 32px rgba(10,22,40,.06);position:relative;overflow:hidden}.card:hover{box-shadow:0 18px 44px rgba(10,22,40,.12);border-color:rgba(34,197,94,.35)}
+.stats .card::before,#dash .card::before,#liveStats .card::before{content:"";position:absolute;left:0;top:0;right:0;height:4px;background:linear-gradient(90deg,var(--green),var(--blue))}
+.stat{background:linear-gradient(135deg,#0a1628,#1d4ed8);-webkit-background-clip:text;color:transparent;letter-spacing:-.03em}
+.lbl{text-transform:uppercase;letter-spacing:.06em;font-size:.72rem;font-weight:600}
+input,select{border-radius:14px;background:#f7fafd;border:1.5px solid #e1e9f3;padding:12px 14px}input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(45,212,255,.18);background:#fff}
+th{font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;position:sticky;top:0;background:#fff;border-bottom:1px solid #e3eaf3}tbody tr:hover,tr:hover td{background:#f4faf7}td{padding:10px 8px}
+.scroll{border-radius:14px}.scroll::-webkit-scrollbar,.log::-webkit-scrollbar{width:8px}.scroll::-webkit-scrollbar-thumb,.log::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:8px}
+.bar{height:10px;border-radius:10px}.msg{border-radius:14px}.math{border-radius:16px;border-left:5px solid var(--green);box-shadow:0 8px 24px rgba(10,22,40,.05)}
+.best{letter-spacing:-.03em;font-size:1.9rem}section{padding:80px 5%}
 </style></head><body>
 <nav><b>⚡ Energy<span>Trade</span></b><a href="#home">Home</a><a href="#how">How It Works</a><a href="#features">Features</a><a href="#market">Marketplace</a><a href="#analytics">Analytics</a><a href="#perf">Performance</a><a href="#algo">Algorithm</a><button class="btn g" onclick="location='#orders'">Get Started</button></nav>
 
@@ -120,7 +137,7 @@ async function refresh(){try{const s=await api('stats');
  $('tBuy').innerHTML=tb(o.buys,'B');$('tSell').innerHTML=tb(o.sells,'S');await loadTrades()}catch(e){console.error(e)}}
 async function submitOrder(side){const k=side=='buy'?'bid':'ask';const party=$(k+'_id').value.trim(),price=+$(k+'_p').value,qty=+$(k+'_q').value;
  if(!party)return msg('m_'+side,'ID is required',0);if(!(price>0))return msg('m_'+side,'Price must be positive',0);if(!(qty>0)||!Number.isInteger(qty))return msg('m_'+side,'Quantity must be a positive whole number',0);
- try{const r=await api('orders',{side,party,price,qty});msg('m_'+side,'Order '+(side=='buy'?'B-':'S-')+r.order.id+' placed',1);refresh()}catch(e){msg('m_'+side,e.message,0)}}
+ try{const r=await api('orders',{side,party,price,qty});msg('m_'+side,'Order '+(side=='buy'?'B-':'S-')+r.order.id+' placed',1);['_id','_p','_q'].forEach(x=>$(k+x).value='');$(k+'_id').focus();refresh()}catch(e){msg('m_'+side,e.message,0)}}
 async function gen(){$('genMsg').textContent='Generating…';try{const r=await api('generate',{n:$('genN').value});$('genMsg').textContent=`Added ${fmt(r.buys)} buys + ${fmt(r.sells)} sells in ${r.ms} ms`;refresh()}catch(e){$('genMsg').textContent=e.message}}
 async function clearAll(){await api('clear',{});$('genMsg').textContent='Cleared';refresh()}
 const tree=(a,c)=>{if(!a.length)return'<span class="lbl">Heap is empty</span>';const W=640,nw=72,nh=52,gy=80,rows=Math.min(4,Math.ceil(Math.log2(a.length+1))),H=16+(rows-1)*gy+nh;
